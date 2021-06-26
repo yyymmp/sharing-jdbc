@@ -11,24 +11,8 @@
 可以将这类表在每个数据库都保存一份，**所有对公共表的更新操作都同时发送到所有分库执行。**
 
 #### docker创建mysql主从（一主一从）
-```
-docker-mysql
-├── master
-│   ├── conf
-│   │   └── my.cnf
-│   └── data
-└── slaver
-    ├── conf
-    │   └── my.cnf
-    └── data
-```
 
-    
-  
-
-
-- 创建master
-```docker run --name mastermysql -d -p 3316:3306 -e MYSQL_ROOT_PASSWORD=root -v E:/sharing-jdbc/docker-mysql/master/data:/var/lib/mysql -v E:/sharing-jdbc/docker-mysql/master/conf/my.cnf:/etc/mysql/my.cnf  mysql:5.7```
-
-- 创建slave
-```docker run --name slavermysql -d -p 3326:3306 -e MYSQL_ROOT_PASSWORD=root -v E:/sharing-jdbc/docker-mysql/slaver/data:/var/lib/mysql -v E:/sharing-jdbc/docker-mysql/slaver/conf/my.cnf:/etc/mysql/my.cnf  mysql:5.7```
+#### sharing-jdbc 读写分离原理
+Sharding-JDBC 实现读写分离则是根据sql 语句语义分析，当 sql 语句有 insert、update、delete 时，Sharding-JDBC 就把这次操作在主数据库上执行；
+当 sql 语句有 select 时，就会把这次操作在从数据库上执行，从而实现读写分离过程。
+但 Sharding-JDBC 并不会做数据同步，数据同步是配置 MySQL 后由 MySQL 自己完成的。(所以需要配置主从)
