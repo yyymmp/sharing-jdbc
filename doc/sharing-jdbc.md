@@ -257,3 +257,4 @@ spring.shardingsphere.sharding.broadcast‐tables=region
 #所有的表都要配分表策略(除了公共表) 只有一张表时可写死
 #垂直分库是在设计时就做的事情,当垂直分库做好后,配置中没用垂直分库的策略,只需要配置数据源 然后进行分表配置即可 参考上例store_db
 ```
+当mybaits与shard-jdbc同时指定了主键生成规则,则使用shard-jdbc生成规则
