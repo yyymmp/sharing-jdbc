@@ -258,3 +258,37 @@ spring.shardingsphere.sharding.broadcast‐tables=region
 #垂直分库是在设计时就做的事情,当垂直分库做好后,配置中没用垂直分库的策略,只需要配置数据源 然后进行分表配置即可 参考上例store_db
 ```
 当mybaits与shard-jdbc同时指定了主键生成规则,则使用shard-jdbc生成规则
+
+#### 实际中遇到的一些坑
+- 与springboot整合时,druid连接不能使用boot-start
+```yaml
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+    #使用druid
+    <dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.2.6</version>
+    </dependency>
+    
+    <dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid-spring-boot-starter</artifactId>
+    <version>1.2.6</version>
+    </dependency>
+```
+- 整合sharding-jdbc后报错:DataSource health check failed
+在配置文件中加入
+```yaml
+management:
+  health:
+    db:
+      enabled: false
+```
+- 当yml中指定dev时,打包时指定也会以dev为准
+```markdown
+mvn clean package -Pprod
+```
